@@ -22,7 +22,6 @@ def PRM():
         "GPU": False}
 
     prm = check_path_data(prm)
-    print(prm["path_data"])
     return prm
 
 

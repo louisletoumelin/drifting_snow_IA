@@ -71,11 +71,12 @@ D17_total = vertical_gradients(D17_total)
     'vert_grad_RH', 'vert_grad_T', 'vert_grad_U']
 """
 
-"""
+
 variables_training = ["U2m", "RH2m", "T2m", "FC_2_y"]
 results_1 = cross_validate(D17_total, MAR, variables_training)
 print_results(results_1, variables_training)
 pd.to_pickle(results_1, "result_1.pkl")
+
 """
 # Additional sensors
 variables_training = ["U2m", "RH2m", "T2m", "RH3", "RH4", "RH5", "RH6", "T2", "T3", "T4", "T5", "FC_2_y"]
@@ -83,21 +84,22 @@ results_2 = cross_validate(D17_total, MAR, variables_training)
 print_results(results_2, variables_training)
 pd.to_pickle(results_2, "results_2.pkl")
 """
-
+"""
 # Gradients height
 variables_training = ["RH2m", "T2m", "U2m", 'gradient_zT1', 'gradient_zT2',
     'gradient_zT3', 'gradient_zT4', 'gradient_zT5', 'gradient_zT6', "FC_2_y"]
 results_3 = cross_validate(D17_total, MAR, variables_training)
 print_results(results_3, variables_training)
 pd.to_pickle(results_3, "results_3.pkl")
-
-
+"""
+"""
 # Radiative measurements
 variables_training = ["RH2m", "T2m", "U2m",  'SWU', 'SWD', 'LWU', 'LWD', "FC_2_y"]
 results_4 = cross_validate(D17_total, MAR, variables_training)
 print_results(results_4, variables_training)
 pd.to_pickle(results_4, "results_4.pkl")
-
+"""
+"""
 # Wind only
 variables_training = ["U2m", "FC_2_y"]
 results_5 = cross_validate(D17_total, MAR, variables_training)

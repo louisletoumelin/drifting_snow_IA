@@ -1,16 +1,8 @@
 from collections import defaultdict
 import time
 
-from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import RidgeCV
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import GridSearchCV
 
 from models.lasso import *
 from models.poly import *
@@ -20,7 +12,6 @@ from models.transformer import *
 
 
 def prepare_Dataset(D17_total, input_variables, test_year, label="FC_2_y"):
-
     # Delete NaNs
     Dataset = D17_total[input_variables]
     Dataset = Dataset.dropna()
@@ -45,7 +36,7 @@ def prepare_Dataset(D17_total, input_variables, test_year, label="FC_2_y"):
     X_valid = scaler.transform(X_valid)
     X_test = scaler.transform(X_test)
 
-    return(X_train, y_train, X_test, y_test, y_test_index, X_valid, y_valid)
+    return X_train, y_train, X_test, y_test, y_test_index, X_valid, y_valid
 
 
 def cross_validate(D17_total, MAR, input_variables):
@@ -61,7 +52,8 @@ def cross_validate(D17_total, MAR, input_variables):
 
     for test_year in list_years:
         start_time = time.time()
-        X_train, y_train, X_test, y_test, y_test_index, X_valid, y_valid = prepare_Dataset(D17_total, input_variables, test_year)
+        X_train, y_train, X_test, y_test, \
+        y_test_index, X_valid, y_valid = prepare_Dataset(D17_total, input_variables, test_year)
         results["index"].append(y_test_index)
 
         print('\n' + str(test_year))
@@ -96,11 +88,10 @@ def cross_validate(D17_total, MAR, input_variables):
 
         # RMSE
         results["mar"]["corr_coeff"].append(pd.concat([y_test_MAR, y_test], axis=1).corr().iloc[0, 1])
-        results["mar"]["rmse"].append(mean_squared_error(y_test, y_test_MAR) ** (0.5))
+        results["mar"]["rmse"].append(mean_squared_error(y_test, y_test_MAR) ** 0.5)
         results["mar"]["bias"].append(y_test_MAR.mean() - y_test.mean())
         results["mar"]["y_pred"].append(y_test_MAR)
 
         print("--- %s seconds for ---" % (time.time() - start_time))
 
-    return(results)
-
+    return results

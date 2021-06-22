@@ -1,56 +1,53 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import tensorflow as tf
-
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_squared_error
-
 
 import keras
 
 from prm.prm import *
 
+
 def choose_optimizer(name, learning_rate):
-    '''
+    """
       _____________________________________________________________
       _____________________________________________________________
       _______ Function use to CV search the best optimizer ________
       __________Input = Name, Leaning rate_________________________
       _____________________________________________________________
-    '''
+    """
 
     if name == "SGD":
-        return (keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.0, nesterov=False))
+        return keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.0, nesterov=False)
 
     if name == "RMSprop":
-        return (keras.optimizers.RMSprop(learning_rate=learning_rate, rho=0.9))
+        return keras.optimizers.RMSprop(learning_rate=learning_rate, rho=0.9)
 
     if name == "Adagrad":
-        return (keras.optimizers.Adagrad(learning_rate=learning_rate))
+        return keras.optimizers.Adagrad(learning_rate=learning_rate)
 
     if name == "Adadelta":
-        return (keras.optimizers.Adadelta(learning_rate=learning_rate, rho=0.95))
+        return keras.optimizers.Adadelta(learning_rate=learning_rate, rho=0.95)
 
     if name == "Adam":
-        return (keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999, amsgrad=False))
+        return keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999, amsgrad=False)
 
     if name == "Adamax":
-        return (keras.optimizers.Adamax(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999))
+        return keras.optimizers.Adamax(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999)
 
     if name == "Nadam":
-        return (keras.optimizers.Nadam(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999))
+        return keras.optimizers.Nadam(learning_rate=learning_rate, beta_1=0.9, beta_2=0.999)
 
 
 def build_model(X_train, y_train, X_valid_scaled, y_valid, params):
-    '''
+    """
     _____________________________________________________________
     _____________________________________________________________
     _________________     Classic        ________________________
     _____________________________________________________________
     _____________________________________________________________
-    '''
+    """
 
     if params["architecture"] == 1:
 
@@ -139,11 +136,10 @@ def build_model(X_train, y_train, X_valid_scaled, y_valid, params):
         # __________________   Compiling   ____________________________
         model.compile(loss=params["loss"], optimizer=optimizer)
 
-    return(model)
+    return model
 
 
 def dnn_regr(X_train, y_train, X_test, y_test, X_valid, y_valid, results):
-
     # Fit
     return_best_dnn_fit = True
     best_dnn = build_model(X_train, y_train, X_valid, y_valid, PRM())
@@ -155,10 +151,10 @@ def dnn_regr(X_train, y_train, X_test, y_test, X_valid, y_valid, results):
     # Cleaning prediction
     y_pred = pd.DataFrame(y_pred)
     y_test = pd.DataFrame(y_test)
-    y_pred[y_pred<0] = 0
+    y_pred[y_pred < 0] = 0
 
-    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0,1]
-    rmse = mean_squared_error(y_test, y_pred)**(0.5)
+    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0, 1]
+    rmse = mean_squared_error(y_test, y_pred) ** 0.5
     bias = np.mean(y_pred - y_test)
 
     results["dnn"]["corr_coeff"].append(corr_coeff)
@@ -166,4 +162,4 @@ def dnn_regr(X_train, y_train, X_test, y_test, X_valid, y_valid, results):
     results["dnn"]["bias"].append(bias)
     results["dnn"]["y_pred"].append(y_pred)
 
-    return(results)
+    return results

@@ -6,7 +6,6 @@ from sklearn.linear_model import Lasso
 
 
 def poly_regr(X_train, y_train, X_test, y_test, results):
-
     # Prepare polynomial features
     poly_features = PolynomialFeatures(degree=2, include_bias=False)
     X_poly = poly_features.fit_transform(X_train)
@@ -22,11 +21,11 @@ def poly_regr(X_train, y_train, X_test, y_test, results):
     # Cleaning prediction
     y_pred = pd.DataFrame(y_pred)
     y_test = pd.DataFrame(y_test)
-    y_pred[y_pred<0] = 0
-    y_pred = y_pred-y_pred.min()
+    y_pred[y_pred < 0] = 0
+    y_pred = y_pred - y_pred.min()
 
-    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0,1]
-    rmse = mean_squared_error(y_test, y_pred)**(0.5)
+    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0, 1]
+    rmse = mean_squared_error(y_test, y_pred) ** 0.5
     bias = np.mean(y_pred - y_test)
 
     results["poly"]["corr_coeff"].append(corr_coeff)
@@ -34,4 +33,4 @@ def poly_regr(X_train, y_train, X_test, y_test, results):
     results["poly"]["bias"].append(bias)
     results["poly"]["y_pred"].append(y_pred)
 
-    return(results)
+    return results

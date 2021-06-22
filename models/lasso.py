@@ -16,11 +16,11 @@ def lasso_regr(X_train, y_train, X_test, y_test, results):
     # Cleaning prediction
     y_pred = pd.DataFrame(y_pred)
     y_test = pd.DataFrame(y_test)
-    y_pred[y_pred<0] = 0
-    y_pred = y_pred-y_pred.min()
+    y_pred[y_pred < 0] = 0
+    y_pred = y_pred - y_pred.min()
 
-    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0,1]
-    rmse = mean_squared_error(y_test, y_pred)**(0.5)
+    corr_coeff = pd.concat([y_pred, y_test], axis=1).corr().iloc[0, 1]
+    rmse = mean_squared_error(y_test, y_pred) ** 0.5
     bias = np.mean(y_pred - y_test)
 
     results["lasso"]["corr_coeff"].append(corr_coeff)
@@ -28,4 +28,4 @@ def lasso_regr(X_train, y_train, X_test, y_test, results):
     results["lasso"]["bias"].append(bias)
     results["lasso"]["y_pred"].append(y_pred)
 
-    return(results)
+    return results
