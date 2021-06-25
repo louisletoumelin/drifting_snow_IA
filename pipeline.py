@@ -71,13 +71,13 @@ D17_total = vertical_gradients(D17_total)
     'vert_grad_RH', 'vert_grad_T', 'vert_grad_U']
 """
 
-
+"""
 variables_training = ["U2m", "RH2m", "T2m", "FC_2_y"]
 results_1 = cross_validate(D17_total, MAR, variables_training)
 print_results(results_1, variables_training)
 pd.to_pickle(results_1, "result_1.pkl")
 
-"""
+
 # Additional sensors
 variables_training = ["U2m", "RH2m", "T2m", "RH3", "RH4", "RH5", "RH6", "T2", "T3", "T4", "T5", "FC_2_y"]
 results_2 = cross_validate(D17_total, MAR, variables_training)
